@@ -4,3 +4,5 @@
 ```
 befunge SOURCE
 ```
+
+バイナリはReleaseからWin版のみダウンロード出来ます。
