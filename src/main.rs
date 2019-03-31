@@ -1,14 +1,17 @@
 mod befunge;
 
 use befunge::Befunge;
-use std::env;
+use std::{env, error};
 
-fn main() -> Result<(), Box<std::error::Error>> {
-    let path = env::args().nth(1);
-    if let None = path {
-        eprintln!("usage: befunge SOURCE");
-        return Ok(())
+fn main() -> Result<(), Box<error::Error>> {
+    let path = env::args().nth(1).ok_or("usage: befunge SOURCE")?;
+    let mut befunge = Befunge::new(path.as_str())?;
+    match befunge.run() {
+        Ok(_) => Ok(()),
+        Err(err) => {
+            eprintln!("\x1B[31;1H");
+            eprintln!("{}", err.description());
+            Err(err)
+        },
     }
-    let mut befunge = Befunge::new(path.unwrap().as_str())?;
-    befunge.run()
 }
